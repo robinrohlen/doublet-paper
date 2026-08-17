@@ -257,14 +257,14 @@ if load_data==0
         fr=fr(fr>=100);
 
         % f_intra = your vector of intra-doublet (high-frequency) values, in order
-        n = locs*dt-locs(1)*dt;%(1:numel(fr))';               % spike/doublet time
+        n = locs*dt-locs(1)*dt; % spike/doublet time
 
         % Model: f(n) = f_ss + (f0 - f_ss)*exp(-(n-1)/tau)
         % Parameters: p(1)=f_ss (plateau), p(2)=f0-f_ss (amplitude), p(3)=tau
         model = @(p,n) p(1) + p(2).*exp(-(n-1)./p(3));
 
         % Initial guesses from the data
-        p0 = [fr(end), fr(from_spike)-fr(end), beta_tmp*150];   % [plateau, amplitude, tau]
+        p0 = [fr(end), fr(from_spike)-fr(end), beta_tmp*150]; % [plateau, amplitude, tau]
 
         cost = @(p) sum((model(p,n(from_spike:end)) - fr(from_spike:end)).^2);
         p_fit = fminsearch(cost, p0);
@@ -290,14 +290,14 @@ if load_data==0
         fr=fr(fr>=100);
 
         % f_intra = your vector of intra-doublet (high-frequency) values, in order
-        n = locs*dt-locs(1)*dt;%(1:numel(fr))';               % spike/doublet time
+        n = locs*dt-locs(1)*dt; % spike/doublet time
 
         % Model: f(n) = f_ss + (f0 - f_ss)*exp(-(n-1)/tau)
         % Parameters: p(1)=f_ss (plateau), p(2)=f0-f_ss (amplitude), p(3)=tau
         model = @(p,n) p(1) + p(2).*exp(-(n-1)./p(3));
 
         % Initial guesses from the data
-        p0 = [fr(end), fr(from_spike)-fr(end), beta_tmp*25];   % [plateau, amplitude, tau]
+        p0 = [fr(end), fr(from_spike)-fr(end), beta_tmp*25]; % [plateau, amplitude, tau]
 
         cost = @(p) sum((model(p,n(from_spike:end)) - fr(from_spike:end)).^2);
         p_fit = fminsearch(cost, p0);
@@ -308,12 +308,6 @@ if load_data==0
         fr_save_axon{i}=fr;
         locs_save_axon{i}=n;
         INaP_save_axon{i}=I_output.INaP_s;
-
-        % Plot
-        % figure; plot(n, fr, 'o'); hold on;
-        % plot(n(from_spike:end), model(p_fit,n(from_spike:end)), '-');
-        % xlabel('doublet index'); ylabel('intra-doublet frequency (Hz)');
-        % legend('data','exp fit');
     end
 
     save('data/figure-files/NaP_adaptation.mat','beta','from_spike','model','I','f_ss_soma','tau_adapt_soma','model_fit_soma','fr_save_soma','locs_save_soma','f_ss_axon','tau_adapt_axon');
@@ -451,9 +445,6 @@ if load_data==0
                     % Find first location of singlet
                     first_singlet=find(fr<doublet_thresh);
                     first_singlet=first_singlet(1);
-                    
-
-                    % If triplet or more, remove
 
                     % Store number of doublets and singlets
                     doublet_mat(i,j)=sum(fr>=doublet_thresh)-sum(diff(find(fr>=doublet_thresh))==1)-sum(diff(find(fr>=doublet_thresh))>2);

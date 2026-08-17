@@ -91,9 +91,9 @@ if load_data==0
 
     param = [0.03 0.30 -90 0.20 0.04 0.05 0.02 0.02 0.07 0.08 0.15 150 25];
 
-    I=[0.20 1.35]; % 0.2 1.4 works
-    ramp_length=[flip(diff(I)./linspace(0.00015,0.3,30))]; % 10 works
-    dV_th_peak=0.010; % 10 mV/ms
+    I=[0.20 1.35];
+    ramp_length=[flip(diff(I)./linspace(0.00015,0.3,30))];
+    dV_th_peak=0.010; % threshold 10 mV/ms
 
     dt = 0.001;
 
@@ -120,8 +120,6 @@ if load_data==0
         fr_idx=find(fr>=100);
         locs(fr_idx+1)=[];
         dVs_roi=dVs((1000/dt):locs(1));
-        %dVs_roi=(dVs((1000/dt):locs(1))-dV_th_peak).^2;
-        %[maxVal,maxInd]=max(dVs_roi);
         
         abs_dVs_roi=abs((dVs_roi-dV_th_peak));
         [maxVal,maxInd]=max(abs_dVs_roi);
@@ -129,7 +127,6 @@ if load_data==0
         [minVal,minInd]=min(abs_dVs_roi);
 
         V_thr_first(i)=Vs((1000/dt)+(maxInd-2/dt)+minInd);
-        % V_thr_first(i)=Vs((1003/dt)+minInd);
        
         % Second spike
         dVs_roi=dVs(locs(1):locs(2));
@@ -153,8 +150,6 @@ yyaxis left;
 hold on;
 plot(ramp_speed(1:1:end),V_thr_first(1:1:end),'o','MarkerFaceColor',cmap(5,:),'Color',cmap(5,:),'MarkerSize',8);
 hold off;
-% ylim([-56 -53]);
-% yticks([-56 -55 -54 -53]);
 ylim([-58 -56]);
 yticks([-58 -57 -56]);
 set(gca,'TickDir','out');
@@ -165,8 +160,6 @@ yyaxis right;
 hold on;
 plot(ramp_speed(1:1:end),V_thr_second(1:1:end),'o','MarkerFaceColor',cmap(4,:),'Color',cmap(4,:),'MarkerSize',8);
 hold off;
-% ylim([-56 -53]);
-% yticks([-56 -55 -54 -53]);
 ylim([-58 -56]);
 yticks([-58 -57 -56]);
 xlim([0 0.3]);
@@ -324,8 +317,6 @@ if load_data==0
                     first_singlet=find(fr<doublet_thresh);
                     first_singlet=first_singlet(1);
                     
-                    % If triplet or more, remove
-
                     % Store number of doublets and singlets
                     doublet_mat(i,j)=sum(fr>=doublet_thresh)-sum(diff(find(fr>=doublet_thresh))==1)-sum(diff(find(fr>=doublet_thresh))>2);
                     singlet_mat(i,j)=sum(fr<doublet_thresh)-doublet_mat(i,j);
@@ -566,8 +557,6 @@ param = [0.03 0.30 -90 0.20 0.00 0.05 0.02 0.02 0.07 0.08 0.15 150 25];
 [~,locs3]=findpeaks(Vs3,'MinPeakHeight',0);
 fr3=1000./(dt*diff(locs3));
 
-% param = [0.03 0.30 0.10 -90 0.20 0.04 0.20 0.60 0.004 0.040 ...
-%             0.05 0.02 0.02 0.00 0.30 0.025 0.20 0.07 0.0 0.00 0.00];
 param = [0.03 0.30 -90 0.20 0.04 0.05 0.02 0.02 0.07 0.00 0.00 150 25];
 [Vs4,Vd4,Va4,t4,I_output4] = doublet_3comp_model([0.0 2.4], 'soma', 'euler', param);
 [~,locs4]=findpeaks(Vs4,'MinPeakHeight',0);
